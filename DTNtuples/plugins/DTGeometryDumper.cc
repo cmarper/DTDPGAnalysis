@@ -46,6 +46,7 @@
 #include "Geometry/DTGeometry/interface/DTLayer.h"
 
 #include "DataFormats/DTDigi/interface/DTDigiCollection.h"
+#include "DataFormats/RPCDigi/interface/RPCDigiCollection.h"
 #include "DataFormats/MuonDetId/interface/DTChamberId.h"
 #include "DataFormats/MuonDetId/interface/DTLayerId.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"

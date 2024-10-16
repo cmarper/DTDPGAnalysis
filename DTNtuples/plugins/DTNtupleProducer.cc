@@ -29,6 +29,7 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleGenFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleMuonFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleDigiFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtupleRPCDigiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleSegmentFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGPhiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGThetaFiller.h"
@@ -57,6 +58,9 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
 
   pushToF(DTNtupleDigiFiller(consumesCollector(), m_config, m_tree, "digi",    DTNtupleDigiFiller::DigiTag::PH1));
   pushToF(DTNtupleDigiFiller(consumesCollector(), m_config, m_tree, "ph2Digi", DTNtupleDigiFiller::DigiTag::PH2));
+
+  pushToF(DTNtupleRPCDigiFiller(consumesCollector(), m_config, m_tree, "rpcDigi",    DTNtupleRPCDigiFiller::RpcDigiTag::PH1));
+  pushToF(DTNtupleRPCDigiFiller(consumesCollector(), m_config, m_tree, "ph2RpcDigi", DTNtupleRPCDigiFiller::RpcDigiTag::PH2));
 
   pushToF(DTNtupleSegmentFiller(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
   pushToF(DTNtupleSegmentFiller(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
