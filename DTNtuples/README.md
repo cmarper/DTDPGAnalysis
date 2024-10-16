@@ -24,6 +24,6 @@ git clone https://github.com/cmarper/DTDPGAnalysis.git
 # No ageing
 cmsRun dtDpgNtuples_phase2_cfg.py nEvents=100 applyTriggerAgeing=False ntupleName=test.root 
 
-#Ageing
+# Ageing
 cmsRun dtDpgNtuples_phase2_cfg.py nEvents=50 applyTriggerAgeing=True ageingTag='MuonAgeingAndFailures_3000fbm1_DT_L1TTDR' ageingInput='sqlite_file:MuonAgeingAndFailures_3000fbm1_DT_L1TTDR_v1_mc.db' ntupleName=test-ageing.root
 ```
