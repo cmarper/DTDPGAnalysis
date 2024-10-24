@@ -57,20 +57,12 @@ class DTNtupleRPCDigiFiller : public DTNtupleBaseFiller
 
   unsigned int m_nDigis; // the # of digis (size of all following vectors)
 
-  /*std::vector<short> m_digi_wheel;   // wheel (short in [-2:2] range)
-  std::vector<short> m_digi_sector;  // sector (short in [1:14] range)
-                                     // sector 13 used for the second MB4 of sector 4
-                                     // sector 14 used for the second MB4 of sector 10
-  std::vector<short> m_digi_station; // station (short in [1:4] range)
+  std::vector<int>  m_digi_strip;   // strip
+  std::vector<int>  m_digi_bx;      // bx
   
-  std::vector<short> m_digi_superLayer; // superlayer (short in [1:3] range)
-                                        // SL 1 and 3 are phi SLs
-                                        // SL 2 is theta SL
-  std::vector<short> m_digi_layer;      // layer (short in [1:4] range)
-  std::vector<short> m_digi_wire;       // wire (short in [1:X] range)
-                                        // X varies for different chambers SLs and layers
-
-  std::vector<float> m_digi_time; // float with digi time in ns (no pedestal subtraction)*/ 
+  std::vector<double> m_digi_time;        // time
+  std::vector<double> m_digi_coordinateX; // coordinateX
+  std::vector<double> m_digi_coordinateY; // coordinateY
 
 };
   

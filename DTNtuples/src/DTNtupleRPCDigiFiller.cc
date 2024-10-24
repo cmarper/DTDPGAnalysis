@@ -12,6 +12,8 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 
+#include "DataFormats/MuonDetId/interface/RPCDetId.h"
+
 DTNtupleRPCDigiFiller::DTNtupleRPCDigiFiller(edm::ConsumesCollector && collector,
 				       const std::shared_ptr<DTNtupleConfig> config, 
 				       std::shared_ptr<TTree> tree, const std::string & label,
@@ -37,15 +39,12 @@ void DTNtupleRPCDigiFiller::initialize()
   
   m_tree->Branch((m_label + "_nDigis").c_str(), &m_nDigis, (m_label + "_nDigis/i").c_str());
   
-  /*m_tree->Branch((m_label + "_wheel").c_str(),   &m_digi_wheel);
-  m_tree->Branch((m_label + "_sector").c_str(),  &m_digi_sector);
-  m_tree->Branch((m_label + "_station").c_str(), &m_digi_station);
+  m_tree->Branch((m_label + "_strip").c_str(), &m_digi_strip);
+  m_tree->Branch((m_label + "_BX").c_str(), &m_digi_bx);
 
-  m_tree->Branch((m_label + "_superLayer").c_str(), &m_digi_superLayer);
-  m_tree->Branch((m_label + "_layer").c_str(),      &m_digi_layer);
-  m_tree->Branch((m_label + "_wire").c_str(),       &m_digi_wire);
-
-  m_tree->Branch((m_label + "_time").c_str(), &m_digi_time);*/
+  m_tree->Branch((m_label + "_time").c_str(), &m_digi_time);
+  m_tree->Branch((m_label + "_coordinateX").c_str(), &m_digi_coordinateX);
+  m_tree->Branch((m_label + "_coordinateY").c_str(), &m_digi_coordinateY);
   
 }
 
@@ -54,15 +53,12 @@ void DTNtupleRPCDigiFiller::clear()
 
   m_nDigis = 0;
 
-  /*m_digi_wheel.clear();
-  m_digi_sector.clear();
-  m_digi_station.clear();
+  m_digi_strip.clear();
+  m_digi_bx.clear();
 
-  m_digi_superLayer.clear();
-  m_digi_layer.clear();
-  m_digi_wire.clear();
-
-  m_digi_time.clear();*/
+  m_digi_time.clear();
+  m_digi_coordinateX.clear();
+  m_digi_coordinateY.clear();
 
 }
 
@@ -72,37 +68,21 @@ void DTNtupleRPCDigiFiller::fill(const edm::Event & ev)
   clear();
 
   auto rpcDigis = conditionalGet<RPCDigiCollection>(ev, m_rpcDigiToken,"RPCDigiCollection");
+  
+  if (rpcDigis) std::cout<<"Got an RPC Digi"<<std::endl;
 
   if (rpcDigis.isValid()) 
     {
-      
-      /*auto rpcLayerIdIt  = rpcDigis->begin();
-      auto rpcLayerIdEnd = rpcDigis->end();
-      
-      for (; rpcLayerIdIt != rpcLayerIdEnd; ++rpcLayerIdIt)
-	{
+      std::cout<<"Got a valid RPC Digi"<<std::endl;
 
-	  const auto & rpcLayerId = (*rpcLayerIdIt).first;
+      auto rpcDetIdIt = rpcDigis->begin();
+      auto rpcDetIdEnd = rpcDigis->end();
 
-	  auto digiIt  = (*rpcLayerIdIt).second.first;
-	  auto digiEnd = (*rpcLayerIdIt).second.second;
-	  
-	  for (; digiIt != digiEnd; ++digiIt)
-	    {
-	      m_digi_wheel.push_back(dtLayerId.wheel());
-	      m_digi_sector.push_back(dtLayerId.sector());
-	      m_digi_station.push_back(dtLayerId.station());
+      for (; rpcDetIdIt != rpcDetIdEnd; ++rpcDetIdIt)
+        {
+          const auto & rpcDetId = (*rpcDetIdIt).first;
 
-	      m_digi_superLayer.push_back(dtLayerId.superLayer());
-	      m_digi_layer.push_back(dtLayerId.layer());
-	      m_digi_wire.push_back(digiIt->wire());
-
-	      m_digi_time.push_back(digiIt->time());
-	      
-	      m_nDigis++;
-
-	    }
-	}*/
+	}
     }
   
   return;
