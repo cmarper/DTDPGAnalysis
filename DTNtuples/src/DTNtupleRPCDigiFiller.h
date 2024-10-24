@@ -14,7 +14,12 @@
 
 #include "DataFormats/RPCDigi/interface/RPCDigiCollection.h"
 
+#include "FWCore/Utilities/interface/EDGetToken.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"
+
+#include "Geometry/RPCGeometry/interface/RPCGeometry.h"
+#include "Geometry/Records/interface/MuonGeometryRecord.h"
+
 
 #include <vector>
 
@@ -51,15 +56,20 @@ class DTNtupleRPCDigiFiller : public DTNtupleBaseFiller
 
   /// The digi token
   edm::EDGetTokenT<RPCDigiCollection> m_rpcDigiToken;
+  //edm::ESGetToken<RPCGeometry, MuonGeometryRecord> m_rpcGeomToken;
 
-  /// The variables holding
-  /// all digi related information
+  /// The variables holding all digi related information
 
   unsigned int m_nDigis; // the # of digis (size of all following vectors)
+ 
+  std::vector<short> m_digi_region; 
+  std::vector<short> m_digi_sector;  // sector (short in [1:14] range)
+                                     // sector 13 used for the second MB4 of sector 4
+                                     // sector 14 used for the second MB4 of sector 10
+  std::vector<short> m_digi_station; // station (short in [1:4] range)
 
-  std::vector<int>  m_digi_strip;   // strip
-  std::vector<int>  m_digi_bx;      // bx
-  
+  std::vector<int>  m_digi_strip;         // strip
+  std::vector<int>  m_digi_bx;            // bx  
   std::vector<double> m_digi_time;        // time
   std::vector<double> m_digi_coordinateX; // coordinateX
   std::vector<double> m_digi_coordinateY; // coordinateY
