@@ -24,10 +24,17 @@ void make_tree(TString filename, bool ageing = 0, int coin = 0, int quality = 0,
 
   // Activate the necessary branches
 
+  tree->SetBranchStatus("gen_nGenParts",1);
+  tree->SetBranchStatus("gen_pdgId",1);
+  tree->SetBranchStatus("gen_pt",1);
+  tree->SetBranchStatus("gen_phi",1);
+  tree->SetBranchStatus("gen_eta",1);
+  tree->SetBranchStatus("gen_charge",1);
+
   tree->SetBranchStatus("ph2TpgPhiEmuAm_wheel",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_sector",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_station",1);
-  tree->SetBranchStatus("ph2TpgPhiEmuAm_quality",1);
+ // tree->SetBranchStatus("ph2TpgPhiEmuAm_quality",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_superLayer",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_rpcFlag",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_phi",1);
@@ -35,7 +42,7 @@ void make_tree(TString filename, bool ageing = 0, int coin = 0, int quality = 0,
   tree->SetBranchStatus("ph2TpgPhiEmuAm_BX",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_t0",1);
 
-  tree->SetBranchStatus("seg_nSegments",1);
+ /* tree->SetBranchStatus("seg_nSegments",1);
   tree->SetBranchStatus("seg_wheel",1);
   tree->SetBranchStatus("seg_sector",1);
   tree->SetBranchStatus("seg_station",1);
@@ -55,7 +62,7 @@ void make_tree(TString filename, bool ageing = 0, int coin = 0, int quality = 0,
   tree->SetBranchStatus("rpcDigi_BX",1);
   tree->SetBranchStatus("rpcDigi_time",1);
   tree->SetBranchStatus("rpcDigi_coordinateX",1);
-  tree->SetBranchStatus("rpcDigi_coordinateY",1);
+  tree->SetBranchStatus("rpcDigi_coordinateY",1);*/
 
   //Create a new file and clone the old tree header
 

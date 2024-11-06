@@ -12,7 +12,9 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/LuminosityBlock.h"
 
+//#include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/ESHandle.h"
+using namespace std;
 
 DTNtupleEventFiller::DTNtupleEventFiller(edm::ConsumesCollector && collector,
 					 const std::shared_ptr<DTNtupleConfig> config, 

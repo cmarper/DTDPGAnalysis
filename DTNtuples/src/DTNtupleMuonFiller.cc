@@ -12,6 +12,7 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/LuminosityBlock.h"
 
+//#include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
@@ -42,7 +43,7 @@ DTNtupleMuonFiller::DTNtupleMuonFiller(edm::ConsumesCollector && collector,
 {
 
   edm::InputTag & muonTag = m_config->m_inputTags["muonTag"];
-  if (muonTag.label() != "none") m_muToken = collector.consumes<edm::View<reco::Muon>>(muonTag);
+  if (muonTag.label() != "none") m_muToken = collector.consumes<reco::MuonCollection>(muonTag);
 
   edm::InputTag & primaryVerticesTag = m_config->m_inputTags["primaryVerticesTag"];
   if (primaryVerticesTag.label() != "none") m_primaryVerticesToken = collector.consumes<std::vector<reco::Vertex>>(primaryVerticesTag);
@@ -198,7 +199,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 
   clear();
 
-  auto muons = conditionalGet<edm::View<reco::Muon>>(ev, m_muToken, "MuonCollection");
+  auto muons = conditionalGet<reco::MuonCollection>(ev, m_muToken, "MuonCollection");
   auto segments = conditionalGet<DTRecSegment4DCollection>(ev,m_dtSegmentToken, "DTRecSegment4DCollection");
   auto vtxs = conditionalGet<std::vector<reco::Vertex>>(ev, m_primaryVerticesToken, "std::vector<reco::Vertex>");
 
@@ -284,7 +285,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	  m_trkMu_numberOfMatchedRPCLayers.push_back(muon.numberOfMatchedRPCLayers());
 
 	  //STANDALONE MUON VARIABLES
-	  if(muon.isStandAloneMuon() && false)
+	  if(muon.isStandAloneMuon())
 	    {
 	      
 	      const reco::TrackRef outerTrackRef = muon.outerTrack();
@@ -301,7 +302,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	    }
 
 	  //GLOBAL MUON VARIABLES
-	  if(muon.isGlobalMuon() && false)
+	  if(muon.isGlobalMuon())
 	    {
 	      
 	      const reco::TrackRef globalTrackRef = muon.globalTrack();
@@ -417,7 +418,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	  TVectorF segmentMatches (10);
 	  int iSegMatches = 0;
 
-	  if(!muon.outerTrack().isNull() && false)
+	  if(!muon.outerTrack().isNull())
 	    {
 
 	      reco::TrackRef outerTrackRef = muon.outerTrack();

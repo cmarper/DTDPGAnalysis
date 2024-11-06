@@ -29,6 +29,9 @@
 
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
+#include <iostream>
+#include <fstream>
+
 #include <map>
 #include <string>
 #include <memory>
@@ -54,6 +57,12 @@ public:
 
   /// Map containing different input tags
   std::map<std::string, edm::InputTag> m_inputTags;
+
+  /// Map containing different boolean parameters
+  std::map<std::string, bool> m_boolParams;
+
+  /// Map containing different boolean parameters
+  std::map<std::string, std::string> m_stringParams;
 
   /// The class to handle DT trigger time pedestals
   std::map<PhaseTag, std::unique_ptr<DTTTrigBaseSync>> m_dtSyncs;

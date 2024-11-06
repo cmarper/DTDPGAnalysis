@@ -151,6 +151,10 @@ process.simBmtfDigis.DTDigi_Theta_Source = "simDtTriggerPrimitiveDigis"
 
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
+##JAVI
+process.dtNtupleProducer.shift_filename = cms.untracked.string('L1Trigger/DTTriggerPhase2/data/wire_rawId_x.txt')
+process.dtNtupleProducer.maxdrift_filename = cms.untracked.string('L1Trigger/DTTriggerPhase2/data/simple_vdrift.txt')
+
 process.p = cms.Path(process.rpcRecHits
                      + process.dt1DRecHits
                      + process.dt4DSegments

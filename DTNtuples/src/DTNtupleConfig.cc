@@ -65,6 +65,12 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet &config, edm::ConsumesCol
 
   m_inputTags["ph1BmtfOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1BmtfOutTag", none);
 
+  m_boolParams["useExtDataformat"] = config.getUntrackedParameter<bool>("useExtDataformat", true);
+  m_boolParams["shift_coordinates"] = config.getUntrackedParameter<bool>("shift_coordinates", true);
+
+  m_stringParams["shift_filename"] = config.getUntrackedParameter<std::string>("shift_filename");
+  m_stringParams["maxdrift_filename"] = config.getUntrackedParameter<std::string>("maxdrift_filename");
+
   if (m_inputTags["ph1DtSegmentTag"].label() != "none")
     m_dtSyncs[PhaseTag::PH1] =
         DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph1tTrigMode"),

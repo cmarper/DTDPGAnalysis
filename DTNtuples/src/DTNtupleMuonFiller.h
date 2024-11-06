@@ -12,7 +12,6 @@
 
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleBaseFiller.h"
 
-#include "DataFormats/Common/interface/View.h"
 #include "DataFormats/MuonReco/interface/Muon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/MuonReco/interface/MuonFwd.h"
@@ -63,7 +62,7 @@ class DTNtupleMuonFiller : public DTNtupleBaseFiller
 		  const reco::Muon & muon); 
 
   /// Tokens
-  edm::EDGetTokenT<edm::View<reco::Muon>>      m_muToken;
+  edm::EDGetTokenT<reco::MuonCollection>      m_muToken;
   edm::EDGetTokenT<DTRecSegment4DCollection>  m_dtSegmentToken;
   edm::EDGetTokenT<std::vector<reco::Vertex>> m_primaryVerticesToken;
 

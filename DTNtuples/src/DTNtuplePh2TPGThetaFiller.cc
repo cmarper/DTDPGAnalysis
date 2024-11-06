@@ -10,6 +10,7 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGThetaFiller.h"
 
 #include "FWCore/Framework/interface/Event.h"
+//#include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 
 DTNtuplePh2TPGThetaFiller::DTNtuplePh2TPGThetaFiller(edm::ConsumesCollector && collector,
