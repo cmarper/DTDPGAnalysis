@@ -1,4 +1,4 @@
-/** \class DTNtupleRPCDigiFiller DTNtupleRPCDigiFiller.cc DTDPGAnalysis/DTNtuples/src/DTNtupleRPCDigiFiller.cc
+/** \class DTNtDTNtupleRPCDigiFiller.ccupleRPCDigiFiller DTNtupleRPCDigiFiller.cc DTDPGAnalysis/DTNtuples/src/DTNtupleRPCDigiFiller.cc
  *  
  * Helper class : the RPC digi filler for Phase-1 / Phase2 digis (the DataFormat is the same)
  *
@@ -45,7 +45,9 @@ void DTNtupleRPCDigiFiller::initialize()
 
   m_tree->Branch((m_label + "_region").c_str(),  &m_digi_region);
   m_tree->Branch((m_label + "_sector").c_str(),  &m_digi_sector);
+  m_tree->Branch((m_label + "_wheel").c_str(),  &m_digi_wheel);
   m_tree->Branch((m_label + "_station").c_str(), &m_digi_station);
+  m_tree->Branch((m_label + "_layer").c_str(), &m_digi_layer);
 
   m_tree->Branch((m_label + "_strip").c_str(), &m_digi_strip);
   m_tree->Branch((m_label + "_BX").c_str(), &m_digi_bx);
@@ -62,7 +64,9 @@ void DTNtupleRPCDigiFiller::clear()
 
   m_digi_region.clear();
   m_digi_sector.clear();
+  m_digi_wheel.clear(),
   m_digi_station.clear();
+  m_digi_layer.clear(),
 
   m_digi_strip.clear();
   m_digi_bx.clear();
@@ -99,7 +103,9 @@ void DTNtupleRPCDigiFiller::fill(const edm::Event & ev)
 
 	      m_digi_region.push_back(rsid.region());
               m_digi_sector.push_back(rsid.sector());
+	      m_digi_wheel.push_back(rsid.ring());
               m_digi_station.push_back(rsid.station());
+	      m_digi_layer.push_back(rsid.layer());
 
 	      m_digi_strip.push_back(digiIt->strip());
 	      m_digi_bx.push_back(digiIt->bx());
