@@ -152,8 +152,9 @@ void DTNtuplePh2TPGPhiFiller::fill(const edm::Event & ev)
 
   clear();
 
+
   // if (!m_config->m_boolParams["useExtDataformat"]) auto trigColl = conditionalGet<L1Phase2MuDTPhContainer>(ev, m_dtTriggerToken,"L1Phase2MuDTPhContainer");
-  auto trigColl = conditionalGet<L1Phase2MuDTExtPhContainer>(ev, m_dtTriggerTokenExt, "L1Phase2MuDTExtPhContainer");
+  auto trigColl = conditionalGet<L1Phase2MuDTExtPhContainer>(ev, m_dtTriggerTokenExt, "L1Phase2MuDTExtPhContainer"); // df_extended = 1 or 2
 
   if (trigColl.isValid()) {
     const auto trigs = trigColl->getContainer();
