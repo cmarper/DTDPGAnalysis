@@ -56,23 +56,26 @@ class DTNtupleRPCDigiFiller : public DTNtupleBaseFiller
 
   /// The digi token
   edm::EDGetTokenT<RPCDigiCollection> m_rpcDigiToken;
-  //edm::ESGetToken<RPCGeometry, MuonGeometryRecord> m_rpcGeomToken;
 
-  /// The variables holding all digi related information
+  /// The variables holding all digi related information (in barrel)
 
-  unsigned int m_nDigis; // the # of digis (size of all following vectors)
+  unsigned int m_nDigis; 
  
-  std::vector<short> m_digi_region; 
-  std::vector<short> m_digi_sector;
-  std::vector<short> m_digi_wheel;
-  std::vector<short> m_digi_station;
-  std::vector<short> m_digi_layer;
+  std::vector<short> m_digi_region; 	// 0 : barrel; +1, -1: endcaps
+  std::vector<short> m_digi_wheel;      // -2, -1, 0, +1, +2
+  std::vector<short> m_digi_sector;	// Same phi, different r: 1-12
+  std::vector<short> m_digi_subsector;  // Subdividion of sectors along phi
+  std::vector<short> m_digi_station;	// RBX; Same r, different phi: 1-4
+  std::vector<short> m_digi_layer;	// 2 layers in RB1/RB2, 1 layer in RB3/RB4
+  std::vector<short> m_digi_stla;	// Global layer: 1-6
+  std::vector<short> m_digi_roll; 	// Eta partition; each chamber is divided along the strip direction in 2 or 3 rolls
 
-  std::vector<int>  m_digi_strip;
-  std::vector<int>  m_digi_bx;
-  std::vector<double> m_digi_time;
-  std::vector<double> m_digi_coordinateX;
-  std::vector<double> m_digi_coordinateY;
+  std::vector<int>  m_digi_strip;		// 1-96 strips / roll
+  std::vector<int>  m_digi_bx;			// BX
+  std::vector<int>  m_digi_sbx; 		// Sub-bx (will be implemented in future digi version)
+  std::vector<double> m_digi_time;		// Fine time
+  std::vector<double> m_digi_coordinateX;	// 0 in barrel (will be remove in future digi version)
+  std::vector<double> m_digi_coordinateY;	// 0 in barrel (will be remove in future digi version)
 
 };
   
