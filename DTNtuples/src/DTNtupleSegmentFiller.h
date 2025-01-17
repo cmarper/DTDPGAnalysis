@@ -45,7 +45,7 @@ class DTNtupleSegmentFiller : public DTNtupleBaseFiller
   virtual void clear() final;
 
   /// Fill tree branches for a given event
-  virtual void fill(const edm::Event & ev) final;    
+  virtual void fill(const edm::Event & ev, const edm::EventSetup& setup) final;    
 
   /// Fill 2D segment phi component for a given event
   void fillPhi(const DTChamberRecSegment2D* phiSeg, const GeomDet* chamb);

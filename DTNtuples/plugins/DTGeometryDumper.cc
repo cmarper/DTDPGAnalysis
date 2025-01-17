@@ -82,6 +82,7 @@ private:
   std::vector<std::string> m_geomTags;
   using GeomToken = edm::ESGetToken<DTGeometry, MuonGeometryRecord>;
   std::map<std::string, GeomToken> m_dtGeomTokens;
+
 };
 
 //
@@ -96,6 +97,7 @@ DTGeometryDumper::DTGeometryDumper(const edm::ParameterSet &iConfig)
   for (const auto &geomTag : m_geomTags) {
     m_dtGeomTokens[geomTag] = consumesCollector().esConsumes<edm::Transition::BeginRun>(edm::ESInputTag("", geomTag));
   }
+
 }
 
 DTGeometryDumper::~DTGeometryDumper() {}

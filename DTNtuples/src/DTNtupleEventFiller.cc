@@ -61,7 +61,7 @@ void DTNtupleEventFiller::clear()
   
 }
 
-void DTNtupleEventFiller::fill(const edm::Event & ev)
+void DTNtupleEventFiller::fill(const edm::Event & ev, const edm::EventSetup& setup)
 {
 
   clear();

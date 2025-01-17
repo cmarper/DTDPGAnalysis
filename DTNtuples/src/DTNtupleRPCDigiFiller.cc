@@ -11,36 +11,43 @@
 
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/ESHandle.h"
-
 #include "DataFormats/MuonDetId/interface/RPCDetId.h"
+#include "Geometry/RPCGeometry/interface/RPCGeometry.h"
+#include "Geometry/RPCGeometry/interface/RPCRoll.h"
+
+// Include these headers for type registration
+#include "FWCore/ServiceRegistry/interface/Service.h"
+#include "FWCore/PluginManager/interface/PluginFactory.h"
+#include "FWCore/Utilities/interface/typelookup.h"
+
+// Register the type RPCGeometry
+TYPELOOKUP_DATA_REG(RPCGeometry);
 
 DTNtupleRPCDigiFiller::DTNtupleRPCDigiFiller(edm::ConsumesCollector && collector,
-				       const std::shared_ptr<DTNtupleConfig> config, 
-				       std::shared_ptr<TTree> tree, const std::string & label,
-				       RpcDigiTag tag) : 
+                                             const std::shared_ptr<DTNtupleConfig> config, 
+                                             std::shared_ptr<TTree> tree, const std::string & label,
+                                             RpcDigiTag tag) : 
   DTNtupleBaseFiller(config, tree, label), m_tag(tag)
 {
-
   edm::InputTag & iTag = m_tag == RpcDigiTag::PH1 ?
                                   m_config->m_inputTags["ph1RpcDigiTag"] :
                                   m_config->m_inputTags["ph2RpcDigiTag"];
 
   if (iTag.label() != "none")
-   {
-     m_rpcDigiToken = collector.consumes<RPCDigiCollection>(iTag);
-     //m_rpcGeomToken = collector.consumes<RPCGeometry,MuonGeometryRecord>(iTag);
-   }
-
+  {
+    m_rpcDigiToken = collector.consumes<RPCDigiCollection>(iTag);
+    rpcGeomToken_ = collector.esConsumes<RPCGeometry, MuonGeometryRecord>();
+  }
 }
 
 DTNtupleRPCDigiFiller::~DTNtupleRPCDigiFiller() 
 { 
-
-};
+}
 
 void DTNtupleRPCDigiFiller::initialize()
-{
-  
+{ 
+  std::cout<<"····················· DTNtupleRPCDigiFiller::initialize()"<<std::endl;
+
   m_tree->Branch((m_label + "_nDigis").c_str(), &m_nDigis, (m_label + "_nDigis/i").c_str());
 
   m_tree->Branch((m_label + "_region").c_str(),  &m_digi_region);
@@ -58,12 +65,10 @@ void DTNtupleRPCDigiFiller::initialize()
   m_tree->Branch((m_label + "_time").c_str(), &m_digi_time);
   m_tree->Branch((m_label + "_coordinateX").c_str(), &m_digi_coordinateX);
   m_tree->Branch((m_label + "_coordinateY").c_str(), &m_digi_coordinateY);
-  
 }
 
 void DTNtupleRPCDigiFiller::clear()
 {
-
   m_nDigis = 0;
 
   m_digi_region.clear();
@@ -81,55 +86,71 @@ void DTNtupleRPCDigiFiller::clear()
   m_digi_time.clear();
   m_digi_coordinateX.clear();
   m_digi_coordinateY.clear();
-
 }
 
-void DTNtupleRPCDigiFiller::fill(const edm::Event & ev)
+void DTNtupleRPCDigiFiller::fill(const edm::Event &ev, const edm::EventSetup &iSetup)
 {
-
   clear();
 
-  auto rpcDigis = conditionalGet<RPCDigiCollection>(ev, m_rpcDigiToken,"RPCDigiCollection");
-  
+  auto rpcDigis = conditionalGet<RPCDigiCollection>(ev, m_rpcDigiToken, "RPCDigiCollection");
   if (rpcDigis) 
-   {
-      auto rpcDetUnitIt = rpcDigis->begin();
-      auto rpcDetUnitEnd = rpcDigis->end();
+  {
+    edm::ESHandle<RPCGeometry> rpcGeometry = iSetup.getHandle(rpcGeomToken_);
 
-      for (; rpcDetUnitIt != rpcDetUnitEnd; ++rpcDetUnitIt)
-        {
+    auto rpcDetUnitIt = rpcDigis->begin();
+    auto rpcDetUnitEnd = rpcDigis->end();
 
-          const RPCDetId rsid = (*rpcDetUnitIt).first;
-	  const RPCDigiCollection::Range &range = (*rpcDetUnitIt).second;
+    for (; rpcDetUnitIt != rpcDetUnitEnd; ++rpcDetUnitIt)
+    {
+      const RPCDetId rsid = (*rpcDetUnitIt).first;
+      const RPCDigiCollection::Range &range = (*rpcDetUnitIt).second;
 
-	  for (auto digiIt = range.first; digiIt != range.second; ++digiIt) 
-	   {
+      const RPCRoll* roll = rpcGeometry->roll(rsid);
+      int sectorroll = (roll->id()).sector();
 
-              m_nDigis++;
+      std::cout<<"--------------------------"<<std::endl;
+      std::cout<<"Sector roll "<<sectorroll<<std::endl;
 
-	      m_digi_region.push_back(rsid.region());
-	      m_digi_wheel.push_back(rsid.ring());
-              m_digi_sector.push_back(rsid.sector());
-	      m_digi_subsector.push_back(rsid.subsector()); //FIXME
-              m_digi_station.push_back(rsid.station());
-	      m_digi_layer.push_back(rsid.layer());
-	      int stla = (rsid.station() <= 2) ? (2 * (rsid.station() - 1) + rsid.layer()) : (rsid.station() + 2);
-	      m_digi_stla.push_back(stla);
-	      m_digi_roll.push_back(rsid.roll());
+      for (auto digiIt = range.first; digiIt != range.second; ++digiIt)
+      {
+        int strip = digiIt->strip();
 
-	      m_digi_strip.push_back(digiIt->strip());
-	      m_digi_bx.push_back(digiIt->bx());
-	      m_digi_sbx.push_back(-999); //FIXME
-	      m_digi_time.push_back(digiIt->time());
-              m_digi_coordinateX.push_back(digiIt->coordinateX());
-	      m_digi_coordinateY.push_back(digiIt->coordinateY());
+        //GlobalPoint stripPosition = roll->toGlobal(roll->centreOfStrip(strip));
+        //double globalphi = stripPosition.phi();
+        //std::cout<<"RPCDigi strip x: "<<stripposx<<std::endl;
 
-	    }
+        std::cout<<"RPCDigi roll "<<rsid.sector()<<std::endl;
 
-	}
-   }
-  
+        m_nDigis++;
+        m_digi_region.push_back(rsid.region());
+        m_digi_wheel.push_back(rsid.ring());
+        m_digi_sector.push_back(rsid.sector());
+        m_digi_subsector.push_back(rsid.subsector());
+        m_digi_station.push_back(rsid.station());
+        m_digi_layer.push_back(rsid.layer());
+        int stla = (rsid.station() <= 2) ? (2 * (rsid.station() - 1) + rsid.layer()) : (rsid.station() + 2);
+        m_digi_stla.push_back(stla);
+        m_digi_roll.push_back(rsid.roll());
+        m_digi_strip.push_back(strip);
+        m_digi_bx.push_back(digiIt->bx());
+        m_digi_sbx.push_back(-999);
+        m_digi_time.push_back(digiIt->time());
+        //m_digi_coordinateX.push_back(stripPosition.x());
+        //m_digi_coordinateY.push_back(stripPosition.y());
+        m_digi_coordinateX.push_back(-999);
+        m_digi_coordinateY.push_back(-999);
+      }
+    }
+  }
+
   return;
 
 }
 
+/*void DTNtupleRPCDigiFiller::fill(const edm::Event &ev)
+{
+  // This method should be implemented in a way that it gets called with the EventSetup parameter
+  // from the appropriate context in your framework.
+  // For now, just log an error or throw an exception if this method is called inappropriately.
+  //throw std::runtime_error("DTNtupleRPCDigiFiller::fill(const edm::Event&) should not be called directly. Use fill(const edm::Event&, const edm::EventSetup&) instead.");
+}*/

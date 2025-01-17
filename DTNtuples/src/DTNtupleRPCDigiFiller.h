@@ -16,6 +16,7 @@
 
 #include "FWCore/Utilities/interface/EDGetToken.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "FWCore/Framework/interface/EventSetup.h"
 
 #include "Geometry/RPCGeometry/interface/RPCGeometry.h"
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
@@ -36,7 +37,7 @@ class DTNtupleRPCDigiFiller : public DTNtupleBaseFiller
 		     std::shared_ptr<TTree> tree, const std::string & label, 
 		     RpcDigiTag tag);
 
-  ///Destructor
+    ///Destructor
   virtual ~DTNtupleRPCDigiFiller();
  
   /// Intialize function : setup tree branches etc ... 
@@ -46,7 +47,7 @@ class DTNtupleRPCDigiFiller : public DTNtupleBaseFiller
   virtual void clear() final;
 
   /// Fill tree branches for a given events
-  virtual void fill(const edm::Event & ev) final;    
+  virtual void fill(const edm::Event & ev, const edm::EventSetup & iSetup) final;
 
  private :
 
@@ -56,6 +57,9 @@ class DTNtupleRPCDigiFiller : public DTNtupleBaseFiller
 
   /// The digi token
   edm::EDGetTokenT<RPCDigiCollection> m_rpcDigiToken;
+
+  /// The RPC geometry token
+  edm::ESGetToken<RPCGeometry, MuonGeometryRecord> rpcGeomToken_;
 
   /// The variables holding all digi related information (in barrel)
 

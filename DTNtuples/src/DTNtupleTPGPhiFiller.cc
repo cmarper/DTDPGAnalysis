@@ -95,7 +95,7 @@ void DTNtupleTPGPhiFiller::clear()
 
 }
 
-void DTNtupleTPGPhiFiller::fill(const edm::Event & ev)
+void DTNtupleTPGPhiFiller::fill(const edm::Event & ev, const edm::EventSetup& setup)
 {
 
   clear();

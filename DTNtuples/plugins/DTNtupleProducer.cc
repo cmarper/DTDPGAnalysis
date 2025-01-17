@@ -118,7 +118,7 @@ void DTNtupleProducer::analyze(const edm::Event & ev, const edm::EventSetup & en
 
   for (const auto & filler : m_fillers) 
     {
-      filler->fill(ev);
+      filler->fill(ev, environment);
     }
 
  m_tree->Fill();

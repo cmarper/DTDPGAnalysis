@@ -202,7 +202,7 @@ void DTNtupleSegmentFiller::clear()
 
 }
 
-void DTNtupleSegmentFiller::fill(const edm::Event & ev)
+void DTNtupleSegmentFiller::fill(const edm::Event & ev, const edm::EventSetup& setup)
 {
 
 	clear();

@@ -39,7 +39,7 @@ class DTNtupleBaseFiller
   virtual void clear() = 0;
 
   /// Fill tree branches for a given event
-  virtual void fill(const edm::Event & ev) = 0;
+  virtual void fill(const edm::Event & ev, const edm::EventSetup &iSetup) = 0;
 
  protected :
 

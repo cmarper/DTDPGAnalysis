@@ -70,7 +70,7 @@ void DTNtupleBmtfFiller::clear()
 
 }
 
-void DTNtupleBmtfFiller::fill(const edm::Event & ev)
+void DTNtupleBmtfFiller::fill(const edm::Event & ev, const edm::EventSetup& setup)
 {
 
   clear();

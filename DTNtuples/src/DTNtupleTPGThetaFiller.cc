@@ -72,7 +72,7 @@ void DTNtupleTPGThetaFiller::clear()
 
 }
 
-void DTNtupleTPGThetaFiller::fill(const edm::Event & ev)
+void DTNtupleTPGThetaFiller::fill(const edm::Event & ev, const edm::EventSetup& setup)
 {
 
   clear();

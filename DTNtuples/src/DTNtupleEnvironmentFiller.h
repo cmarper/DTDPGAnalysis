@@ -43,7 +43,7 @@ class DTNtupleEnvironmentFiller : public DTNtupleBaseFiller
   virtual void clear() final;
 
   /// Fill tree branches for a given events
-  virtual void fill(const edm::Event & ev) final;    
+  virtual void fill(const edm::Event & ev, const edm::EventSetup& setup) final;    
 
  private :
 

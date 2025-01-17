@@ -194,7 +194,7 @@ void DTNtupleMuonFiller::clear()
 
 }
 
-void DTNtupleMuonFiller::fill(const edm::Event & ev)
+void DTNtupleMuonFiller::fill(const edm::Event & ev, const edm::EventSetup& setup)
 {
 
   clear();
