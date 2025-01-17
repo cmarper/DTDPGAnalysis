@@ -78,8 +78,20 @@ class DTNtupleRPCDigiFiller : public DTNtupleBaseFiller
   std::vector<int>  m_digi_bx;			// BX
   std::vector<int>  m_digi_sbx; 		// Sub-bx (will be implemented in future digi version)
   std::vector<double> m_digi_time;		// Fine time
-  std::vector<double> m_digi_coordinateX;	// 0 in barrel (will be remove in future digi version)
-  std::vector<double> m_digi_coordinateY;	// 0 in barrel (will be remove in future digi version)
+
+  std::vector<double> m_digi_localPhi;
+  std::vector<double> m_digi_localEta;
+  std::vector<double> m_digi_localR;
+  std::vector<double> m_digi_localX;
+  std::vector<double> m_digi_localY;
+  std::vector<double> m_digi_localZ;
+
+  std::vector<double> m_digi_globalPhi;
+  std::vector<double> m_digi_globalEta;
+  std::vector<double> m_digi_globalR;
+  std::vector<double> m_digi_globalX;
+  std::vector<double> m_digi_globalY;
+  std::vector<double> m_digi_globalZ;
 
 };
   
