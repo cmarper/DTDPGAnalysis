@@ -10,54 +10,6 @@
 
 using namespace std;
 
-// Methods for clusters
-struct DigiData {
-    vector<int> regions;
-    vector<int> wheels;
-    vector<int> sectors;
-    vector<int> subsectors;
-    vector<int> stations;
-    vector<int> layers;
-    vector<int> stlas;
-    vector<int> rolls;
-    vector<int> bxs;
-    vector<int> times;
-    vector<int> strips;
-};
-
-// CLustering function
-vector<vector<int>> grouping(const vector<int>& stripsinput) {
-
-    vector<vector<int>> grouped;
-
-    vector<int> input = stripsinput;
-
-    if (input.empty()) return grouped;
-
-    sort(input.begin(), input.end());
-
-    vector<int> currentGroup;
-    currentGroup.push_back(input[0]);
-
-    // Iterate through the vector and group contiguous elements
-    for (size_t i = 1; i < input.size(); ++i) {
-        // Check if the current element is contiguous with the previous one
-        if (input[i] == input[i - 1] + 1) {
-            currentGroup.push_back(input[i]);
-        } else {
-            // If not contiguous, save the current group and start a new one
-            grouped.push_back(currentGroup);
-            currentGroup.clear();
-            currentGroup.push_back(input[i]);
-        }
-    }
-
-    // Add the last group
-    grouped.push_back(currentGroup);
-
-    return grouped;
-}
-
 void make_tree(TString filename, TString suffix="_skimmed"){
   
   TChain * tree = new TChain("DTTREE");
@@ -100,6 +52,8 @@ void make_tree(TString filename, TString suffix="_skimmed"){
   tree->SetBranchStatus("ph2TpgPhiEmuAm_phiBCMSSW",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_BX",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_t0",1);
+  tree->SetBranchStatus("ph2TpgPhiEmuAm_posLoc_x",1);
+  tree->SetBranchStatus("ph2TpgPhiEmuAm_dirLoc_phi",1);
 
   tree->SetBranchStatus("rpcDigi_nDigis",1);
   tree->SetBranchStatus("rpcDigi_region",1);
@@ -113,6 +67,15 @@ void make_tree(TString filename, TString suffix="_skimmed"){
   tree->SetBranchStatus("rpcDigi_strip",1);
   tree->SetBranchStatus("rpcDigi_BX",1);
   tree->SetBranchStatus("rpcDigi_time",1);
+  tree->SetBranchStatus("rpcDigi_localPhi",1);
+  tree->SetBranchStatus("rpcDigi_localR",1);
+  tree->SetBranchStatus("rpcDigi_localX",1);
+  tree->SetBranchStatus("rpcDigi_globalPhi",1);
+  tree->SetBranchStatus("rpcDigi_globalEta",1);
+  tree->SetBranchStatus("rpcDigi_globalR",1);
+  tree->SetBranchStatus("rpcDigi_globalX",1);
+  tree->SetBranchStatus("rpcDigi_globalY",1);
+  tree->SetBranchStatus("rpcDigi_globalZ",1);
 
   tree->SetBranchStatus("rpcCluster_nStrips",1);
   tree->SetBranchStatus("rpcCluster_region",1);
