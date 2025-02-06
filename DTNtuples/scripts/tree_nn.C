@@ -40,6 +40,26 @@ void make_tree(TString filename, TString suffix="_skimmed"){
   tree->SetBranchStatus("seg_phi_t0",1);
   tree->SetBranchStatus("seg_z_nHits",1);
 
+  tree->SetBranchStatus("seg_phiHits_pos",1);
+  tree->SetBranchStatus("seg_phiHits_posCh",1);
+  tree->SetBranchStatus("seg_phiHits_posErr",1);
+  tree->SetBranchStatus("seg_phiHits_side",1);
+  tree->SetBranchStatus("seg_phiHits_wire",1);
+  tree->SetBranchStatus("seg_phiHits_wirePos",1);
+  tree->SetBranchStatus("seg_phiHits_layer",1);
+  tree->SetBranchStatus("seg_phiHits_superLayer",1);
+  tree->SetBranchStatus("seg_phiHits_time",1);
+  tree->SetBranchStatus("seg_phiHits_timeCali",1);
+
+  tree->SetBranchStatus("ph2Digi_nDigis",1);
+  tree->SetBranchStatus("ph2Digi_wheel",1);
+  tree->SetBranchStatus("ph2Digi_sector",1);
+  tree->SetBranchStatus("ph2Digi_station",1);
+  tree->SetBranchStatus("ph2Digi_superLayer",1);
+  tree->SetBranchStatus("ph2Digi_layer",1);
+  tree->SetBranchStatus("ph2Digi_wire",1);
+  tree->SetBranchStatus("ph2Digi_time",1);
+
   tree->SetBranchStatus("ph2TpgPhiEmuAm_wheel",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_sector",1);
   tree->SetBranchStatus("ph2TpgPhiEmuAm_station",1);
