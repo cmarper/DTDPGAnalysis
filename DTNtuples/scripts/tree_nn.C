@@ -33,6 +33,7 @@ void make_tree(TString filename, TString suffix="_skimmed"){
   tree->SetBranchStatus("seg_sector",1);
   tree->SetBranchStatus("seg_station",1);
   tree->SetBranchStatus("seg_posGlb_phi",1);
+  tree->SetBranchStatus("seg_posGlb_phi_midPlane",1);
   tree->SetBranchStatus("seg_posGlb_eta",1);
   tree->SetBranchStatus("seg_dirGlb_phi",1);
   tree->SetBranchStatus("seg_dirGlb_eta",1);

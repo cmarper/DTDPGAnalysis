@@ -68,37 +68,37 @@ void make_tree(TString filename, int maxevents = -1, unsigned int minsize = 2, T
   //Create a new file and clone the old tree
 
   TString newfilename = filename.ReplaceAll(".root","")+suffix+TString(".root");
-  TFile * newfile = TFile::Open(newfilename.Data(),"recreate");
-
-  TTree * newtree = tree->CloneTree(0);
+  TFile * newfile = TFile::Open(newfilename.Data(),"RECREATE");
 
   // Get old branches to use for clustering
 
-  vector<int> *rpcDigi_region = nullptr; 
-  vector<int> *rpcDigi_wheel = nullptr; 
-  vector<int> *rpcDigi_sector = nullptr;  
-  vector<int> *rpcDigi_subsector = nullptr; 
-  vector<int> *rpcDigi_station = nullptr; 
-  vector<int> *rpcDigi_layer = nullptr; 
-  vector<int> *rpcDigi_stla = nullptr; 
-  vector<int> *rpcDigi_roll = nullptr; 
-  vector<int> *rpcDigi_BX = nullptr; 
-  vector<int> *rpcDigi_time = nullptr; 
-  vector<int> *rpcDigi_strip = nullptr; 
+  vector<short> *_rpcDigi_region;
+  vector<short> *_rpcDigi_wheel;
+  vector<short> *_rpcDigi_sector;
+  vector<short> *_rpcDigi_subsector;
+  vector<short> *_rpcDigi_station;
+  vector<short> *_rpcDigi_layer;
+  vector<short> *_rpcDigi_stla;
+  vector<short> *_rpcDigi_roll;
+  vector<int> *_rpcDigi_BX;
+  vector<double> *_rpcDigi_time;
+  vector<int> *_rpcDigi_strip;
 
-  tree->SetBranchAddress("rpcDigi_region", &rpcDigi_region);
-  tree->SetBranchAddress("rpcDigi_wheel", &rpcDigi_wheel);
-  tree->SetBranchAddress("rpcDigi_sector", &rpcDigi_sector);
-  tree->SetBranchAddress("rpcDigi_subsector", &rpcDigi_subsector);
-  tree->SetBranchAddress("rpcDigi_station", &rpcDigi_station);
-  tree->SetBranchAddress("rpcDigi_layer", &rpcDigi_layer);
-  tree->SetBranchAddress("rpcDigi_stla", &rpcDigi_stla);
-  tree->SetBranchAddress("rpcDigi_roll", &rpcDigi_roll);
-  tree->SetBranchAddress("rpcDigi_BX", &rpcDigi_BX);
-  tree->SetBranchAddress("rpcDigi_time", &rpcDigi_time);
-  tree->SetBranchAddress("rpcDigi_strip", &rpcDigi_strip);
+  tree->SetBranchAddress("rpcDigi_region", &_rpcDigi_region);
+  tree->SetBranchAddress("rpcDigi_wheel", &_rpcDigi_wheel);
+  tree->SetBranchAddress("rpcDigi_sector", &_rpcDigi_sector);
+  tree->SetBranchAddress("rpcDigi_subsector", &_rpcDigi_subsector);
+  tree->SetBranchAddress("rpcDigi_station", &_rpcDigi_station);
+  tree->SetBranchAddress("rpcDigi_layer", &_rpcDigi_layer);
+  tree->SetBranchAddress("rpcDigi_stla", &_rpcDigi_stla);
+  tree->SetBranchAddress("rpcDigi_roll", &_rpcDigi_roll);
+  tree->SetBranchAddress("rpcDigi_BX", &_rpcDigi_BX);
+  tree->SetBranchAddress("rpcDigi_time", &_rpcDigi_time);
+  tree->SetBranchAddress("rpcDigi_strip", &_rpcDigi_strip);
 
   // Add new cluster branches 
+
+  TTree * newtree = tree->CloneTree(0);
 
   vector<float> rpcCluster_nStrips;
   vector<int> rpcCluster_region;
@@ -133,14 +133,19 @@ void make_tree(TString filename, int maxevents = -1, unsigned int minsize = 2, T
   if((maxevents<nEntries) && (maxevents!=-1)) nEntries = maxevents;
   
   for (Long64_t i = 0; i < nEntries; ++i) {
-
     if(i%1000==0) cout<<" i = "<<i<<endl;
 
-    tree->GetEntry(i);
-
-    map<tuple<int,int,int,int,int,int,int,int,int>, DigiData> groupedData;
-
-    size_t nDigis = (*rpcDigi_wheel).size();
+    _rpcDigi_region = 0;
+    _rpcDigi_wheel = 0;
+    _rpcDigi_sector = 0;
+    _rpcDigi_subsector = 0;
+    _rpcDigi_station = 0;
+    _rpcDigi_layer = 0;
+    _rpcDigi_stla = 0;
+    _rpcDigi_roll = 0;
+    _rpcDigi_BX = 0;
+    _rpcDigi_time = 0;
+    _rpcDigi_strip = 0;
 
     rpcCluster_nStrips.clear();
     rpcCluster_region.clear();
@@ -155,19 +160,25 @@ void make_tree(TString filename, int maxevents = -1, unsigned int minsize = 2, T
     rpcCluster_time.clear();
     rpcCluster_avgstrip.clear();
 
+    tree->GetEntry(i);
+
+    map<tuple<int,int,int,int,int,int,int,int,int>, DigiData> groupedData;
+
+    size_t nDigis = (*_rpcDigi_wheel).size();
+
     for (size_t j = 0; j < nDigis; ++j) {
 
-        int region = (*rpcDigi_region).at(j);
-        int wheel = (*rpcDigi_wheel).at(j);
-        int sector = (*rpcDigi_sector).at(j);
-        int subsector = (*rpcDigi_subsector).at(j);
-        int station = (*rpcDigi_station).at(j);
-        int layer = (*rpcDigi_layer).at(j);
-        int stla = (*rpcDigi_stla).at(j);
-        int roll = (*rpcDigi_roll).at(j);
-        int bx = (*rpcDigi_BX).at(j);
-        int time = (*rpcDigi_time).at(j);
-        int strip = (*rpcDigi_strip).at(j);
+	int region = (*_rpcDigi_region).at(j);
+        int wheel = (*_rpcDigi_wheel).at(j);
+        int sector = (*_rpcDigi_sector).at(j);
+        int subsector = (*_rpcDigi_subsector).at(j);
+        int station = (*_rpcDigi_station).at(j);
+        int layer = (*_rpcDigi_layer).at(j);
+        int stla = (*_rpcDigi_stla).at(j);
+        int roll = (*_rpcDigi_roll).at(j);
+        int bx = (*_rpcDigi_BX).at(j);
+        int time = (*_rpcDigi_time).at(j);
+        int strip = (*_rpcDigi_strip).at(j);
 
         // Create a tuple to represent the grouping key
         tuple<int,int,int,int,int,int,int,int,int> key = make_tuple(region, wheel, sector, subsector, station, layer, stla, roll, bx);
@@ -252,7 +263,8 @@ void make_tree(TString filename, int maxevents = -1, unsigned int minsize = 2, T
   }
 
   // Flush to disk
-  newfile->Write();
+  newfile->cd();
+  newtree->Write();
   newfile->Close();
 
   return;
